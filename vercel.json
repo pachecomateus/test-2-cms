@@ -8,6 +8,5 @@
     "src/app/api/**/*.ts": {
       "maxDuration": 10
     }
-  },
-  "ignoreCommand": "git check-ignore -q $VERCEL_FILE_PATH_FULL"
+  }
 }
