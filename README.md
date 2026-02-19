@@ -1,36 +1,151 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Blog CMS
 
-## Getting Started
+A simple Next.js blog CMS system with authentication and post management.
 
-First, run the development server:
+## Features
+
+- **Public Home Page**: View all published blog posts
+- **Admin Login**: Secure login with default credentials (username: `admin`, password: `password`)
+- **Admin Dashboard**: Create, edit, and delete blog posts
+- **SQLite Database**: Persistent storage for posts
+- **Session-based Authentication**: Cookie-based secure authentication
+
+## Quick Start
+
+### Prerequisites
+- Node.js 18+ and npm
+
+### Installation
+
+```bash
+npm install
+```
+
+### Running the Development Server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The application will be available at `http://localhost:3000`
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Running in Production
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+npm run start
+```
 
-## Learn More
+## Using the Application
 
-To learn more about Next.js, take a look at the following resources:
+### Home Page
+- Access at `http://localhost:3000`
+- View all blog posts
+- Click "Admin" to go to login
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Admin Panel
+- Access at `http://localhost:3000/admin/login`
+- Login with:
+  - **Username**: `admin`
+  - **Password**: `password`
+- Create, edit, and delete posts from the dashboard
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Project Structure
 
-## Deploy on Vercel
+```
+src/
+├── app/
+│   ├── page.tsx                  # Home page
+│   ├── layout.tsx                # Root layout
+│   ├── admin/
+│   │   ├── login/page.tsx        # Login page
+│   │   └── dashboard/page.tsx    # Admin dashboard
+│   └── api/                      # API routes
+│       ├── posts/                # Post management endpoints
+│       └── auth/                 # Authentication endpoints
+└── lib/
+    ├── auth.ts                   # Authentication logic
+    ├── db.ts                     # Database operations
+    └── auth-context.tsx          # Auth context provider
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## API Endpoints
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Posts
+- `GET /api/posts` - Get all posts
+- `POST /api/posts/create` - Create a post
+- `PUT /api/posts/update` - Update a post
+- `DELETE /api/posts/delete` - Delete a post
+
+### Authentication
+- `POST /api/auth/login` - Login
+- `POST /api/auth/logout` - Logout
+- `GET /api/auth/check` - Check authentication status
+
+## Default Configuration
+
+| Setting | Value |
+|---------|-------|
+| Default Username | `admin` |
+| Default Password | `password` |
+| Database | SQLite (data/blog.db) |
+| Port | 3000 (or next available) |
+
+⚠️ **Important**: Change the default credentials and session secret before deploying to production!
+
+## Database
+
+The application uses SQLite with the following schema:
+
+```sql
+CREATE TABLE posts (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  title TEXT NOT NULL,
+  content TEXT NOT NULL,
+  createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+  updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+The database file is stored at `data/blog.db` and is created automatically on first run.
+
+## Technologies
+
+- **Next.js 16** - React framework
+- **TypeScript** - Type safety
+- **Tailwind CSS** - Styling
+- **SQLite** - Database
+- **better-sqlite3** - SQLite driver
+
+## Development
+
+```bash
+# Start dev server
+npm run dev
+
+# Build for production
+npm run build
+
+# Run production build
+npm start
+
+# Run ESLint
+npm run lint
+```
+
+## Troubleshooting
+
+### Database corruption
+Delete `data/blog.db` and restart the server to reset the database.
+
+### Port already in use
+If port 3000 is in use, the server will automatically use the next available port.
+
+### Authentication issues
+- Ensure cookies are enabled in your browser
+- Try clearing browser cookies and logging in again
+- Check that you're using the correct credentials
+
+## License
+
+MIT
