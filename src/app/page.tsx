@@ -23,9 +23,15 @@ export default function Home() {
     try {
       const response = await fetch('/api/posts');
       const data = await response.json();
-      setPosts(data);
+      if (Array.isArray(data)) {
+        setPosts(data);
+      } else {
+        console.error('Failed to fetch posts:', data);
+        setPosts([]);
+      }
     } catch (error) {
       console.error('Failed to fetch posts:', error);
+      setPosts([]);
     } finally {
       setLoading(false);
     }
